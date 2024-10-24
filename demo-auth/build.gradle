@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "CLIENT_KEY", '"awp9h9mdmo510fct"'
-        buildConfigField "String", "REDIRECT_URL", '"demoapp://oauthresponse"'
+        buildConfigField "String", "REDIRECT_URL", '"https://open-platform.tiktokapis.com/callback"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,6 +38,24 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += ["-Xjvm-default=all"]
+    }
+    signingConfigs {
+        def propsFile = file("../keystore/keystore.properties")
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        debug {
+            storeFile file("../keystore/release/release.jks")
+            storePassword props['storePassword']
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+        }
+
+        release {
+            storeFile file("../keystore/release/release.jks")
+            storePassword props['storePassword']
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+        }
     }
 }
 
